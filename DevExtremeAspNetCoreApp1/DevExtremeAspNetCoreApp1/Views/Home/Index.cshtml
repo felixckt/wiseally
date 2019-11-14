@@ -1,0 +1,20 @@
+@using DevExtremeAspNetCoreApp1.Models
+@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Home</h2>
+
+@(Html.DevExtreme().DataGrid<Order>()
+    .ShowBorders(true)
+    .DataSource(d => d.Mvc().Controller("Orders").LoadAction("Get").Key("OrderID"))
+    .Columns(columns =>
+        {
+            columns.AddFor(m => m.OrderID);
+        columns.AddFor(m => m.OrderDate);
+        columns.AddFor(m => m.CustomerName);
+        columns.AddFor(m => m.ShipCountry);
+        columns.AddFor(m => m.ShipCity);
+        })
+    )
+)

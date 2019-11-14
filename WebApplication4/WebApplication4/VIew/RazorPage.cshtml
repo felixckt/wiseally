@@ -1,0 +1,61 @@
+﻿@page
+@model WebApplication4.VIew.RazorPageModel
+
+@{
+    ViewData["Title"] = "RazorPage";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>RazorPage</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].StudentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].Photo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].Height)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].Weight)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Student) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfBirth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Photo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Height)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.StudentID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.StudentID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.StudentID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

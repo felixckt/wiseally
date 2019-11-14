@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "View1";
+    Layout = "~/Pages/Shared/_DevExtremeLayout.cshtml";
+}
+
+<h2>View1</h2>
+
+@(Html.DevExtreme().DataGrid<WebApplication1.Model.Order>()
+    .DataSource(ds => ds.Mvc()
+        .Controller("OrdersRazor")
+        .LoadAction("Get")
+        .Key("OrderID")
+    )
+    .RemoteOperations(true)
+    .Columns(columns => {
+
+        columns.AddFor(m => m.OrderID);
+
+        columns.AddFor(m => m.OrderDate);
+
+        columns.AddFor(m => m.CustomerID);
+
+        columns.AddFor(m => m.CustomerName);
+
+        columns.AddFor(m => m.ShipCountry);
+
+        columns.AddFor(m => m.ShipCity);
+    })
+)
