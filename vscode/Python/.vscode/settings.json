@@ -1,0 +1,5 @@
+{
+    "python.linting.enabled": true,
+    "python.pythonPath": "c:\\Users\\ktcheung\\source\\Repos\\wiseally\\vscode\\Python\\.vpyenv\\Scripts\\python.exe",
+    "python.linting.pylintEnabled": true
+}
