@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,7 +30,7 @@ namespace TelerikAspNetCoreAppw2
         {
             // Add framework services.
             services
-                .AddControllersWithViews()
+                .AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 // Maintain property names during serialization. See:
                 // https://github.com/aspnet/Announcements/issues/194
@@ -67,7 +67,7 @@ namespace TelerikAspNetCoreAppw2
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Orders}/{action=Index}/{id?}");
             });
         }
     }
