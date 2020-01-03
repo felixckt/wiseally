@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29609.76
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azure SQL Web API", "Azure SQL Web API\Azure SQL Web API.csproj", "{267B23B5-BCF6-49B1-BE05-B1268C9C3E14}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{267B23B5-BCF6-49B1-BE05-B1268C9C3E14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{267B23B5-BCF6-49B1-BE05-B1268C9C3E14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{267B23B5-BCF6-49B1-BE05-B1268C9C3E14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{267B23B5-BCF6-49B1-BE05-B1268C9C3E14}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {81A044DE-0DF1-4EC7-81AA-FC1B512205C6}
+	EndGlobalSection
+EndGlobal
