@@ -1,0 +1,48 @@
+﻿@page "/SalesOrder/Create"
+@inject HttpClient http
+@using ModelClass.Model;
+@using  Newtonsoft.Json;
+@using System.Net.Http.Headers;
+
+<h3>Create Order</h3>
+
+<EditForm Model="@salesorder" OnValidSubmit="@CreateSalesOrder">
+    <div class="form-field">
+        <label>Name:</label>
+        <div>
+            
+            <InputText @bind-Value="@salesorder.ShipMethod" />
+        </div>
+    </div>
+    
+    <button type="submit" class="btn btn-success">
+        Create Sales Order
+    </button>
+
+</EditForm>
+
+@code {
+
+    ModelClass.Model.SalesOrder salesorder = new ModelClass.Model.SalesOrder();
+    async Task CreateSalesOrder()
+    {
+        salesorder.SalesOrderID = 88888;
+
+        var datastring = JsonConvert.SerializeObject(salesorder);
+
+        var content = new StringContent(datastring);
+
+        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+        await http.PostAsync("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders", content);
+
+        //await http.PostJsonAsync("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders", salesorder);
+
+
+        //await http.PutJsonAsync("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders/70005", salesorder);
+    }
+
+
+
+
+}

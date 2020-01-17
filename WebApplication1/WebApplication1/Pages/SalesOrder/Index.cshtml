@@ -1,0 +1,42 @@
+﻿@page
+@model WebApplication1.SalesOrder.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SalesOrder[0].ShipDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SalesOrder[0].ShipMethod)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.SalesOrder) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipMethod)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.SalesOrderID">編輯</a> |
+                <a asp-page="./Details" asp-route-id="@item.SalesOrderID">詳細</a> |
+                <a asp-page="./Delete" asp-route-id="@item.SalesOrderID">刪除</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

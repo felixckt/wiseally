@@ -31,6 +31,14 @@ namespace Azure_SQL_Web_API
 
             services.AddDbContext<Azure_SQL_Web_APIContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Azure_SQL_Web_APIContext")));
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +48,8 @@ namespace Azure_SQL_Web_API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            
 
             app.UseHttpsRedirection();
 

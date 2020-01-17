@@ -1,0 +1,54 @@
+﻿@page "/SalesOrder"
+@inject HttpClient http
+@using ModelClass.Model
+<h3>SalesOrder</h3>
+
+@if (salesorders == null)
+{
+    <text> Loading... </text>
+} else if (salesorders.Length == 0)
+{
+    <text> There are no records in the data </text>
+} else
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th>Sales Order ID</th>
+            <th>Ship Date</th>
+            <th>Ship Method</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var salesorders in salesorders)
+        {
+        <tr>
+            <td>@salesorders.SalesOrderID.</td>
+            <td>@salesorders.ShipDate</td>
+            <td>@salesorders.ShipMethod</td>
+
+        </tr>
+         }
+    </tbody>
+
+</table>
+};
+
+
+@code {
+
+    ModelClass.Model.SalesOrder[] salesorders { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSalesOrder();
+    }
+
+    async Task LoadSalesOrder()
+
+    {
+     salesorders = await http.GetJsonAsync<ModelClass.Model.SalesOrder[]>("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders");
+    }
+
+
+}

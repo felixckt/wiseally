@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Azure_SQL_Web_API.Data;
+using Microsoft.AspNetCore.Cors;
 
 namespace Azure_SQL_Web_API.Model
 {
