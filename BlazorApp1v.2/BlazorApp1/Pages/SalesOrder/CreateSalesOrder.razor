@@ -1,11 +1,11 @@
-﻿@page "/CrateSalesOrder"
+﻿@page "/CreateSalesOrder"
 @inject HttpClient http
 @using ModelClass.Model
 <h3>Create SalesOrder</h3>
 <div>
-    <button type= class="btn btn-success">
-        Create Sales Order
-    </button>
+    
+    <button type="button" @onclick="PostSalesOrder">Post Save Order</button>
+
 
 
 </div>
@@ -15,10 +15,14 @@
 
     ModelClass.Model.SalesOrder[] salesorders { get; set; }
 
-    protected override async Task btnCreateSalesOrder()
+    async Task PostSalesOrder()
     {
 
-        await http.GetJsonAsync<ModelClass.Model.SalesOrder[]>("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders");
+        var salesorder = new ModelClass.Model.SalesOrder();
+
+        salesorder.ShipMethod = "ABCDE";
+
+        await http.PostJsonAsync("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders",salesorder);
 
     }
 
