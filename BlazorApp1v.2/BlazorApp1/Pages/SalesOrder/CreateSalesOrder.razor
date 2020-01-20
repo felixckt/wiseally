@@ -1,0 +1,26 @@
+﻿@page "/CrateSalesOrder"
+@inject HttpClient http
+@using ModelClass.Model
+<h3>Create SalesOrder</h3>
+<div>
+    <button type= class="btn btn-success">
+        Create Sales Order
+    </button>
+
+
+</div>
+
+
+@code {
+
+    ModelClass.Model.SalesOrder[] salesorders { get; set; }
+
+    protected override async Task btnCreateSalesOrder()
+    {
+
+        await http.GetJsonAsync<ModelClass.Model.SalesOrder[]>("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders");
+
+    }
+
+
+}
