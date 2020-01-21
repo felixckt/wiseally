@@ -11,7 +11,10 @@
         <label>Name:</label>
         <div>
             
+            <InputNumber @bind-Value="@salesorder.SalesOrderID" />
+            <InputDate @bind-Value="@salesorder.ShipDate"/>
             <InputText @bind-Value="@salesorder.ShipMethod" />
+            
         </div>
     </div>
     
@@ -24,22 +27,25 @@
 @code {
 
     ModelClass.Model.SalesOrder salesorder = new ModelClass.Model.SalesOrder();
+
     async Task CreateSalesOrder()
     {
-        salesorder.SalesOrderID = 88888;
+        //salesorder.shipm = 88888;
 
-        var datastring = JsonConvert.SerializeObject(salesorder);
+        
 
-        var content = new StringContent(datastring);
+       
 
-        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            //resonse = await http.PostJsonAsync("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders", salesorder);
+       //     var datastring = JsonConvert.SerializeObject(salesorder);
+       //     var content = new StringContent(datastring);
+       //     content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+       //     var response = await http.PostAsync("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders", content);
+       //     string result = response.Content.ReadAsStringAsync().Result;
+       //     Console.WriteLine(result);
+       
 
-        await http.PostAsync("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders", content);
-
-        //await http.PostJsonAsync("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders", salesorder);
-
-
-        //await http.PutJsonAsync("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders/70005", salesorder);
+       await http.PostJsonAsync("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders", salesorder);
     }
 
 

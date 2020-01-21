@@ -1,5 +1,6 @@
 ﻿@page "/SalesOrder"
 @inject HttpClient http
+@inject IJSRuntime js
 @using ModelClass.Model
 <h3>SalesOrder</h3>
 
@@ -31,8 +32,8 @@ else
             {
                 <tr>
                     <td>
-                        <a class="btn btn-success">Edit</a>
-                        <button class="btn btn-danger">Delete</button>
+                        <a class="btn btn-success" href="EditSalesOrder/@salesorders.SalesOrderID">Edit</a>
+                        <button class="btn btn-danger" @onclick="@(() => DeleteSalesOrder(salesorders.SalesOrderID))">Delete</button>
                     </td>
                     <td>@salesorders.SalesOrderID.</td>
                     <td>@salesorders.ShipDate</td>
@@ -61,5 +62,16 @@ else
         salesorders = await http.GetJsonAsync<ModelClass.Model.SalesOrder[]>("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders");
     }
 
+    async Task DeleteSalesOrder(int salesorderid)
+    {
+        //await js.DisplayMessage("my title", "My message", SweetAlertMessageType.success);
+        //var personSelected = people.First(x => x.Id == personId);
 
+        //if (await js.Confirm("Confirm", $"Do you want to delete {personSelected.Name}?", SweetAlertMessageType.question))
+        {
+            await http.DeleteAsync($"https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders/{salesorderid}");
+            await LoadSalesOrder();
+         //   await LoadPeople();
+        }
+    }
 }
