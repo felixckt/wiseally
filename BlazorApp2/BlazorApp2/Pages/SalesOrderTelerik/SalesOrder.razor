@@ -1,0 +1,148 @@
+﻿@page "/SalesOrderTelerik"
+@inject HttpClient http
+@inject IJSRuntime js
+@inject NavigationManager uriHelper
+@using ModelClass.Model
+<h3>SalesOrder</h3>
+
+@if (salesorders == null)
+{
+    <text> Loading... </text>
+}
+else if (salesorders.Length == 0)
+{
+    <text> There are no records in the data </text>
+}
+else
+{
+
+    <li>
+        <TelerikButton OnClick="@CreateSalesOrder" Primary="true">Create Sales Order</TelerikButton>
+        <br />
+        @helloString
+
+    </li>
+
+    <TelerikTabStrip @bind-ActiveTabIndex="@ActiveTabIndex">
+        <TabStripTab Title="ASP.NET Core Grid">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Sales Order ID</th>
+                        <th>Ship Date</th>
+                        <th>Ship Method</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var salesorders in salesorders)
+                    {
+                        <tr>
+                            <td>
+                                <a class="btn btn-success" href="EditSalesOrder/@salesorders.SalesOrderID">Edit</a>
+                                <button class="btn btn-danger" @onclick="@(() => DeleteSalesOrder(salesorders.SalesOrderID))">Delete</button>
+                            </td>
+                            <td>@salesorders.SalesOrderID.</td>
+                            <td>@salesorders.ShipDate</td>
+                            <td>@salesorders.ShipMethod</td>
+
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+        </TabStripTab>
+        <TabStripTab Title="Telerik Blazor Grid">
+
+            <TelerikGrid Data="@salesorders" Height="400px"
+                         Pageable="true" Sortable="true" Groupable="true"
+                         FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+                         Resizable="true" Reorderable="true">
+                <GridColumns>
+                    <GridCommandColumn>
+                        <GridCommandButton Command="Save" Icon="save" ShowInEdit="true">Update</GridCommandButton>
+                        <GridCommandButton Command="Edit" Icon="edit">Edit</GridCommandButton>
+                        <GridCommandButton Command="Delete" Icon="delete">Delete</GridCommandButton>
+                        <GridCommandButton Command="Cancel" Icon="cancel" ShowInEdit="true">Cancel</GridCommandButton>
+                    </GridCommandColumn>
+                    <GridColumn Field="@(nameof(ModelClass.Model.SalesOrder.SalesOrderID))" Width="120px" />
+                    <GridColumn Field="@(nameof(ModelClass.Model.SalesOrder.ShipDate))" Title="Ship Date" Groupable="false" />
+                    <GridColumn Field="@(nameof(ModelClass.Model.SalesOrder.ShipMethod))" Title="Ship Method" />
+
+                </GridColumns>
+            </TelerikGrid>
+
+        </TabStripTab>
+        <TabStripTab Title="Devexpress Blazor Grid">
+
+            <DxDataGrid  T="@ModelClass.Model.SalesOrder" Data="@salesorders"
+
+                        PageSize="10"
+                        ShowFilterRow="false"
+                         
+                         
+                        style="width:70%">
+                <DxDataGridCommandColumn Width="150px" />
+                <DxDataGridColumn Field="@(nameof(ModelClass.Model.SalesOrder.SalesOrderID))" />
+                <DxDataGridColumn Field="@(nameof(ModelClass.Model.SalesOrder.ShipDate))" />
+                <DxDataGridColumn Field="@(nameof(ModelClass.Model.SalesOrder.ShipMethod))" />
+
+
+            </DxDataGrid>
+
+        </TabStripTab>
+    </TelerikTabStrip>
+
+   
+
+};
+
+
+@code {
+
+    ModelClass.Model.SalesOrder[] salesorders { get; set; }
+    public int ActiveTabIndex { get; set; } = 1;
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSalesOrder();
+    }
+
+    async Task LoadSalesOrder()
+
+    {
+        salesorders = await http.GetJsonAsync<ModelClass.Model.SalesOrder[]>("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders");
+    }
+
+    async Task DeleteSalesOrder(int salesorderid)
+    {
+        //await js.DisplayMessage("my title", "My message", SweetAlertMessageType.success);
+        //var personSelected = people.First(x => x.Id == personId);
+
+        //if (await js.Confirm("Confirm", $"Do you want to delete {personSelected.Name}?", SweetAlertMessageType.question))
+        {
+            await http.DeleteAsync($"https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders/{salesorderid}");
+            await LoadSalesOrder();
+            //   await LoadPeople();
+        }
+    }
+
+    MarkupString helloString;
+    
+     async Task OnRowRemoving(ModelClass.Model.SalesOrder dataItem) {
+        await http.DeleteAsync($"https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders/{dataItem.SalesOrderID}");
+     }
+    //async Task OnRowUpdating(ModelClass.Model.SalesOrder dataItem, IDictionary<string, object> newValue) {
+       // await ForecastService.Update(dataItem, newValue);
+    //}
+    //async Task OnRowInserting(IDictionary<string, object> newValue) {
+    //    await ForecastService.Insert(newValue);
+    //}
+
+    void CreateSalesOrder()
+    {
+
+        uriHelper.NavigateTo("/SalesOrder/Create");
+    }
+}

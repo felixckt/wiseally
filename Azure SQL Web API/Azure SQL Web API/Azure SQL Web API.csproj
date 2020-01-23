@@ -19,4 +19,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="ModelClass">
+      <HintPath>..\..\ModelClass\ModelClass\bin\Release\netcoreapp3.0\ModelClass.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

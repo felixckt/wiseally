@@ -9,8 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BlazorApp2.Data;
 using System.Net.Http;
-using Telerik.Blazor;
-using DevExpress.Blazor;
 
 namespace BlazorApp2
 {
@@ -42,10 +40,6 @@ namespace BlazorApp2
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<HttpClient>();
-            services.AddTelerikBlazor();
-            services.AddDevExpressBlazor();
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

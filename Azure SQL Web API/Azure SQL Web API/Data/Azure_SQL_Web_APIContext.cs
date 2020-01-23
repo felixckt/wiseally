@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Azure_SQL_Web_API.Model;
+using ModelClass.Model;
 
 namespace Azure_SQL_Web_API.Data
 {
@@ -14,6 +15,7 @@ namespace Azure_SQL_Web_API.Data
         {
         }
 
-        public DbSet<Azure_SQL_Web_API.Model.SalesOrder> SalesOrder { get; set; }
+        //public DbSet<Azure_SQL_Web_API.Model.SalesOrder> SalesOrder { get; set; }
+        public DbSet<ModelClass.Model.SalesOrder> SalesOrder { get; set; }
     }
 }

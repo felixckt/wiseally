@@ -1,0 +1,26 @@
+﻿@page "/EditSalesOrder/{salesorderId:int}"
+@inject HttpClient http
+@inject NavigationManager uriHelper
+@attribute [Authorize]
+@using ModelClass.Model;
+
+<h3>Edit Sales Order</h3>
+
+<SalesOrderForm ButtonText="Edit Sales Order" SalesOrder="salesorder"
+            OnValidSubmit="@EditSalesOrderT" />
+
+@code {
+    [Parameter] public int salesorderId { get; set; }
+    ModelClass.Model.SalesOrder salesorder = new ModelClass.Model.SalesOrder();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        salesorder = await http.GetJsonAsync<ModelClass.Model.SalesOrder>($"https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders/{salesorderId}");
+    }
+
+    async Task EditSalesOrderT()
+    {
+        await http.PutJsonAsync($"https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders/{salesorderId}", salesorder);
+        uriHelper.NavigateTo("SalesOrder");
+    }
+}

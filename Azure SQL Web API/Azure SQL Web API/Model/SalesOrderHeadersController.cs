@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Azure_SQL_Web_API.Data;
 using Microsoft.AspNetCore.Cors;
+using ModelClass.Model;
+
 
 namespace Azure_SQL_Web_API.Model
 {
@@ -23,14 +25,14 @@ namespace Azure_SQL_Web_API.Model
 
         // GET: api/SalesOrderHeaders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SalesOrder>>> GetSalesOrderHeader()
+        public async Task<ActionResult<IEnumerable<ModelClass.Model.SalesOrder>>> GetSalesOrderHeader()
         {
             return await _context.SalesOrder.ToListAsync();
         }
 
         // GET: api/SalesOrderHeaders/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<SalesOrder>> GetSalesOrderHeader(int id)
+        public async Task<ActionResult<ModelClass.Model.SalesOrder>> GetSalesOrderHeader(int id)
         {
             var salesOrderHeader = await _context.SalesOrder.FindAsync(id);
 
@@ -46,7 +48,7 @@ namespace Azure_SQL_Web_API.Model
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSalesOrderHeader(int id, SalesOrder salesOrderHeader)
+        public async Task<IActionResult> PutSalesOrderHeader(int id, ModelClass.Model.SalesOrder salesOrderHeader)
         {
             if (id != salesOrderHeader.SalesOrderID)
             {
@@ -78,7 +80,7 @@ namespace Azure_SQL_Web_API.Model
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<SalesOrder>> PostSalesOrderHeader(SalesOrder salesOrderHeader)
+        public async Task<ActionResult<SalesOrder>> PostSalesOrderHeader(ModelClass.Model.SalesOrder salesOrderHeader)
         {
             _context.SalesOrder.Add(salesOrderHeader);
             await _context.SaveChangesAsync();
@@ -88,7 +90,7 @@ namespace Azure_SQL_Web_API.Model
 
         // DELETE: api/SalesOrderHeaders/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<SalesOrder>> DeleteSalesOrderHeader(int id)
+        public async Task<ActionResult<ModelClass.Model.SalesOrder>> DeleteSalesOrderHeader(int id)
         {
             var salesOrderHeader = await _context.SalesOrder.FindAsync(id);
             if (salesOrderHeader == null)

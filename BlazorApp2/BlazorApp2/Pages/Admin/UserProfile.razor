@@ -1,0 +1,43 @@
+﻿
+@page "/UserProfile"
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+    <h3>UserProfile</h3>
+
+<button @onclick="@LogUsername">Write user info to console</button>
+<div><label> User Name </label></div>
+
+<AuthorizeView>
+    <Authorized>
+        Hello, @context.User.Identity.Name!
+        <a href="AzureAD/Account/SignOut">Log out</a>
+        
+    </Authorized>
+    <NotAuthorized>
+        <a href="AzureAD/Account/SignIn">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+
+    public string username = "";
+
+
+    private async Task LogUsername()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            Console.WriteLine($"{user.Identity.Name} is authenticated.");
+            username = user.Identity.Name;
+        }
+        else
+        {
+            Console.WriteLine("The user is NOT authenticated.");
+        }
+    }
+}

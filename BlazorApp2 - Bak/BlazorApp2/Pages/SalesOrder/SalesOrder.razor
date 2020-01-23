@@ -8,8 +8,6 @@
     <a class="btn btn-success" href="SalesOrder/Create">New Order</a>
 </div>
 
-
-
 @if (salesorders == null)
 {
     <text> Loading... </text>
@@ -20,14 +18,6 @@ else if (salesorders.Length == 0)
 }
 else
 {
-
-<li>
-    <TelerikButton OnClick="@SayHelloHandler" Primary="true">Say Hello</TelerikButton>
-    <br />
-    @helloString
-
-</li>
-
     <table class="table">
         <thead>
             <tr>
@@ -81,15 +71,7 @@ else
         {
             await http.DeleteAsync($"https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders/{salesorderid}");
             await LoadSalesOrder();
-            //   await LoadPeople();
+         //   await LoadPeople();
         }
     }
-
-    MarkupString helloString;
-
-   void SayHelloHandler()
-   {
-       string msg = string.Format("Hello from <strong>Telerik Blazor</strong> at {0}.<br /> Now you can use C# to write front-end!", DateTime.Now);
-       helloString = new MarkupString(msg);
-   }
 }

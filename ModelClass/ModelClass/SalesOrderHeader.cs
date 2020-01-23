@@ -7,15 +7,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ModelClass.Model
 {
-    [Table("dbo.SalesOrder")]
+    
     public class SalesOrder
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SalesOrderID { get; set; }
 
         [Display(Name = "Ship Date")]
         public DateTime ShipDate { get; set; }
 
+       
         [Display(Name = "Ship Method")]
         public string ShipMethod { get; set; }
 

@@ -1,0 +1,40 @@
+﻿@using ModelClass.Model;
+
+<EditForm Model="@SalesOrder" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label>Name:</label>
+        <div>
+            <InputNumber @bind-Value="@SalesOrder.SalesOrderID" />
+            
+        </div>
+    </div>
+    <div class="form-group form-markdown-container">
+        <div>
+            <label>Ship Date</label>
+            <div>
+                <InputDate @bind-Value="@SalesOrder.ShipDate" />
+               
+            </div>
+        </div>
+        <div>
+            <label>Ship Method</label>
+            <div>
+                <InputText @bind-Value="@SalesOrder.ShipMethod" />
+
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        @ButtonText
+    </button>
+
+</EditForm>
+
+@code {
+    [Parameter] public ModelClass.Model.SalesOrder SalesOrder { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save Sales Order";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+}
