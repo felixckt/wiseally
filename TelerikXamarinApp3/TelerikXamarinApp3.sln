@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29609.76
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelerikXamarinApp3.Android", "TelerikXamarinApp3\Android\TelerikXamarinApp3.Android.csproj", "{D462587F-8CD6-49AF-BAC6-46673F8D1ECD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelerikXamarinApp3.Portable", "TelerikXamarinApp3\Portable\TelerikXamarinApp3.Portable.csproj", "{1EE2948B-6C7A-4118-9CC8-32FD3177F305}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D462587F-8CD6-49AF-BAC6-46673F8D1ECD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D462587F-8CD6-49AF-BAC6-46673F8D1ECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D462587F-8CD6-49AF-BAC6-46673F8D1ECD}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D462587F-8CD6-49AF-BAC6-46673F8D1ECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D462587F-8CD6-49AF-BAC6-46673F8D1ECD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D462587F-8CD6-49AF-BAC6-46673F8D1ECD}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{1EE2948B-6C7A-4118-9CC8-32FD3177F305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EE2948B-6C7A-4118-9CC8-32FD3177F305}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EE2948B-6C7A-4118-9CC8-32FD3177F305}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EE2948B-6C7A-4118-9CC8-32FD3177F305}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B7BD7FD6-D246-4FB7-8C65-98FDEE947B8E}
+	EndGlobalSection
+EndGlobal
