@@ -21,7 +21,9 @@
         <Label Text="Welcome to Telerik UI for Xamarin!" 
            FontAttributes="Bold"
            HorizontalOptions="Center"
-           VerticalOptions="Center"/>
+           VerticalOptions="Center"
+               />
+        <Button Text="Say Hello" Clicked="Handle_Clicked"/>
 
         <ListView ItemsSource="{Binding salesorders}">
            

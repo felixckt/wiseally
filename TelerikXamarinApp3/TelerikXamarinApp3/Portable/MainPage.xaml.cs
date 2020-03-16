@@ -16,22 +16,40 @@ namespace TelerikXamarinApp3.Portable
         public MainPage()
         {
             InitializeComponent();
-            List<ModelClass.Model.SalesOrder> salesordersui = await GetOrders();
+            
+        }
+        
+        async Task Handle_ClickedAsync(object sender, System.EventArgs e)
+        {
+
+            //List<ModelClass.Model.SalesOrder> saleorderui = GetOrders();
+
+            await GetOrders();
+
+
         }
 
-        public async static Task<List<ModelClass.Model.SalesOrder>> GetOrders()
+        async Task GetOrders2()
+        {
+            await GetOrders();
+        }
+
+
+
+
+
+        public async static Task GetOrders()
+        
         {
             List<ModelClass.Model.SalesOrder> salesorders = new List<ModelClass.Model.SalesOrder>();
 
-            return salesorders;
+            using (HttpClient client = new HttpClient())
+            {
 
-
+                var response = await client.GetAsync("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders");
+                var json = response.Content.ReadAsStringAsync();
+            }
         }
-
-
-        
-
-
-
     }
+       
 }
