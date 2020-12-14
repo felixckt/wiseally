@@ -17,5 +17,11 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="ModelClass">
+      <HintPath>..\..\ModelClass\ModelClass\bin\Release\netcoreapp3.0\ModelClass.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 
 </Project>

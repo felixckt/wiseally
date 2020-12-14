@@ -1,0 +1,327 @@
+﻿@page "/timeSheetEntry"
+@inject HttpClient http
+@inject IJSRuntime js
+@inject NavigationManager uriHelper
+@using TimeSheet.Data
+@using TimeSheet
+@using ModelClass.Model
+@using System.Linq
+@using Util 
+@using Microsoft.SharePoint.Client; 
+@inject WeatherForecastService ForecastService
+    <style>
+        .highlightCellBackGroud {
+            background-color: forestgreen;
+        }
+        .normalCellBackGroud {
+            background-color: white;
+        }
+        .negativeValuesRowFormatting {
+            color: red;
+        }
+
+        .positiveValuesRowFormatting {
+            color: green;
+        }
+    </style>
+
+<h3>TimeSheetEntry</h3>
+
+
+
+
+<TelerikGrid Data="@timesheets" Height="500px"
+             Pageable="true" Sortable="true" Groupable="true"
+             FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+             Resizable="true" Reorderable="true"
+             OnRowRender="@OnRowRenderHandler">
+             
+    <GridColumns>
+        <GridCommandColumn>
+            <GridCommandButton Command="Save" Icon="save" ShowInEdit="true">Update</GridCommandButton>
+            <GridCommandButton Command="Edit time Entry" Icon="edit" OnClick="@CustomEditClick">Edit</GridCommandButton>
+            <GridCommandButton Command="Delete time entry" Icon="delete" OnClick="@DeleteTimeSheet">Delete</GridCommandButton>
+
+        </GridCommandColumn>
+        <GridColumn Field="@(nameof(TimeSheet.Id))" Title="Id" Width="50px" />
+        <GridColumn Field="@(nameof(TimeSheet.Month))" Title="Month" Width="150px" />
+        <GridColumn Field="@(nameof(TimeSheet.Week))" Title="Week" Width="150px" />
+        <GridColumn Field="@(nameof(TimeSheet.Hours))" Title="Hours" Width="150px" />
+        <GridColumn Field="@(nameof(TimeSheet.ProjectCode))" Title="Project Code" Width="150px" />
+        <GridColumn Field="@(nameof(TimeSheet.RFQNumber))" Title="RFQ Number" Width="150px" />
+        <GridColumn Field="@(nameof(TimeSheet.AdminCode))" Title="Admin Code" Width="150px" />
+
+
+
+    </GridColumns>
+</TelerikGrid>
+
+<TelerikTileLayout Columns="3"
+                   ColumnWidth="200px"
+                   RowHeight="150px"
+                   Resizable="true"
+                   Reorderable="true">
+    <TileLayoutItems>
+        <TileLayoutItem HeaderText="Panel 1">
+            <Content>
+                <EditForm Model="@newTimeSheet" OnValidSubmit="@CreateTimeSheet">
+                    <div>
+                        <label>Diff days from Monday </label>
+                        <label> @weekofdate </label>
+
+
+                    </div>
+
+                    <div>
+                        <label>Id</label>
+                        <label>@newTimeSheet.Id     </label>
+                    </div>
+
+
+
+                    <div>
+                        <label>Month: </label>
+                        <TelerikDropDownList Data="@MonthList" @bind-Value="@newTimeSheet.Month">
+
+                        </TelerikDropDownList>
+                    </div>
+
+                    <div>
+                        <label>Week: </label>
+                        <InputNumber @bind-Value="@newTimeSheet.Week" />
+                    </div>
+                    <div>
+                        <label>Hours: </label>
+                        <InputNumber @bind-Value="@newTimeSheet.Hours" />
+                    </div>
+                    <div>
+                        <label>Type of info: </label>
+                        <TelerikRadioGroup Data="@TypeList" @bind-Value="@SelectedType" OnChange="@OnTypeInfoChanged">
+
+                        </TelerikRadioGroup>
+                    </div>
+
+
+                    @if (SelectedType == "Project")
+
+                    {
+
+                        <div>
+                            <label>ProjectCode: </label>
+                            <InputText @bind-Value="@newTimeSheet.ProjectCode" />
+                        </div>
+
+                    }
+
+
+                    @if (SelectedType == "RFQ")
+
+                    {
+                        <div>
+                            <label>RFQ Number: </label>
+                            <InputText @bind-Value="@newTimeSheet.RFQNumber" />
+                        </div>
+                    }
+
+
+                    @if (SelectedType == "Admin")
+
+                    {
+
+                        <div>
+                            <label>Admin Code: </label>
+                            <InputText @bind-Value="@newTimeSheet.AdminCode" />
+                        </div>
+                    }
+                    <div>
+                        <button type="submit" class="btn btn-success">
+                            @(newTimeSheet.Id == 0 ? "Create ":"Update ") time SHeet entry!
+                        </button>
+
+                    </div>
+
+                </EditForm>
+             </Content>
+        </TileLayoutItem>
+        <TileLayoutItem HeaderText="Panel 2">
+            <Content>You can put components in the tiles too.</Content>
+        </TileLayoutItem>
+        <TileLayoutItem HeaderText="Panel 3" RowSpan="3">
+            <Content>This tile is three rows tall.</Content>
+        </TileLayoutItem>
+        <TileLayoutItem HeaderText="Panel 4" RowSpan="2" ColSpan="2">
+            <Content>This tile is two rows tall and two columns wide</Content>
+        </TileLayoutItem>
+    </TileLayoutItems>
+</TelerikTileLayout>
+
+<div>
+    
+</div>
+
+<h3>Add New time sheet entry</h3>
+
+
+
+<TelerikButton OnClick="@NewTimeSheetClick">
+    New time shee entry
+
+</TelerikButton>
+
+
+
+
+    @code {
+        String resturl = "https://netcoreapiwa.azurewebsites.net/api/timesheet";
+        TimeSheet[] timesheets { get; set; }
+        TimeSheet newTimeSheet = new TimeSheet();
+        String pageUser;
+        private WeatherForecast[] forecasts;
+        public int ActiveTabIndex { get; set; } = 1;
+        protected List<int> MonthList = new List<int>() { 1,2,3,4,5,6,7,8,9,10,11,12 };
+
+        string SelectedType { get; set; }
+        IEnumerable<string> TypeList { get; set; } = new List<string>() { "RFQ", "Project", "Admin" };
+
+
+        //SharePoint
+        ListItemCollection SPitems;
+
+
+        //Untility setup
+        int weekofdate = Util.GetWeekOfDate();
+
+
+
+
+
+        [CascadingParameter] private Task<AuthenticationState> AuthenticationState { get; set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+
+            var authState = await AuthenticationState;
+            pageUser = authState.User.Identity.Name;
+
+
+            forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+            await LoadTimeSheet();
+
+            newTimeSheet.Month = DateTime.Today.Month;
+            newTimeSheet.Week = weekofdate;
+            newTimeSheet.StaffName = pageUser;
+
+            //SharePoint
+            //ClientContext context = new ClientContext("https://wiseallyhk.sharepoint.com/sites/IT");
+            //List announcementsList = context.Web.Lists.GetByTitle("NPI");
+            //CamlQuery query = CamlQuery.CreateAllItemsQuery(100);
+            //SPitems = announcementsList.GetItems(query);
+
+            // Retrieve all items in the ListItemCollection from List.GetItems(Query).
+            //context.Load(SPitems);
+            //context.ExecuteQuery();
+            //SPitems.ToList
+        }
+
+        async Task LoadTimeSheet()
+        {
+            timesheets = await http.GetJsonAsync<TimeSheet[]>(resturl + "/email/" + pageUser);
+            // timesheets = timesheets.Where(item => item.StaffName == "felixcheung@wiseally.com.hk");
+
+        }
+
+        async Task CreateTimeSheet()
+        {
+
+            if (newTimeSheet.Id == 0)
+            {
+                await http.PostJsonAsync(resturl, newTimeSheet);
+            }
+            else
+            { await http.PutJsonAsync(resturl + "/" + newTimeSheet.Id.ToString(), newTimeSheet); }
+
+            timesheets = await http.GetJsonAsync<TimeSheet[]>(resturl + "/email/" + pageUser);
+
+        }
+
+        async Task DeleteTimeSheet(GridCommandEventArgs e)
+        {
+            TimeSheet theDeleteItem = e.Item as TimeSheet;
+            //await http.PutJsonAsync(resturl + "/" + theDeleteItem.Id.ToString(), theDeleteItem);
+            await http.DeleteAsync(resturl + "/" + theDeleteItem.Id.ToString());
+            timesheets = await http.GetJsonAsync<TimeSheet[]>(resturl + "/email/" + pageUser);
+        }
+
+
+
+        void CustomEditClick(GridCommandEventArgs e)
+        {
+            TimeSheet theEditItem = e.Item as TimeSheet;
+            // any custom logic
+
+
+            newTimeSheet.Id = theEditItem.Id;
+            newTimeSheet.Month = theEditItem.Month;
+            newTimeSheet.Week = theEditItem.Week;
+            newTimeSheet.StaffName = theEditItem.StaffName;
+            newTimeSheet.ProjectCode = theEditItem.ProjectCode;
+            newTimeSheet.RFQNumber = theEditItem.RFQNumber;
+            newTimeSheet.AdminCode = theEditItem.AdminCode;
+
+
+
+
+            if  (newTimeSheet.AdminCode != "")
+            {
+                SelectedType = "Admin";
+            }
+            if (newTimeSheet.ProjectCode != "")
+            {
+                SelectedType = "Project";
+            }
+            if (newTimeSheet.RFQNumber != "")
+            {
+                SelectedType = "RFQ";
+            }
+
+        }
+
+        void NewTimeSheetClick()
+        {
+            newTimeSheet = new TimeSheet();
+            newTimeSheet.Month = DateTime.Today.Month;
+            newTimeSheet.Week = weekofdate;
+            newTimeSheet.StaffName = pageUser;
+            // timesheets = await http.GetJsonAsync<TimeSheet[]>(resturl + "/email/" + pageUser);
+        }
+
+        void OnTypeInfoChanged()
+        {
+
+            switch (SelectedType)
+            {
+                case "Admin":
+                    newTimeSheet.ProjectCode = "";
+                    newTimeSheet.RFQNumber = "";
+                    break;
+                case "Project":
+                    newTimeSheet.AdminCode = "";
+                    newTimeSheet.RFQNumber = "";
+                    break;
+                case "RFQ":
+                    newTimeSheet.ProjectCode = "";
+                    newTimeSheet.RFQNumber = "";
+                    break;
+
+            }
+        }
+
+        void OnRowRenderHandler(GridRowRenderEventArgs args)
+        {
+            TimeSheet renderItem = args.Item as TimeSheet;
+
+            args.Class = (renderItem.Id == newTimeSheet.Id)? "highlightCellBackGroud": "normalCellBackGroud";
+        }
+
+
+    }

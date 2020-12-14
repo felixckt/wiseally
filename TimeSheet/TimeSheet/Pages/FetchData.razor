@@ -1,0 +1,57 @@
+﻿@page "/fetchdata"
+
+@using TimeSheet.Data
+@inject WeatherForecastService ForecastService
+
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+<li>
+    <TelerikButton Primary="true">Create Sales Order @pageUser  </TelerikButton>
+    <br />
+</li>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private WeatherForecast[] forecasts;
+    [CascadingParameter] private Task<AuthenticationState> AuthenticationState { get; set; }
+    private String pageUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+
+        var authState = await AuthenticationState;
+        pageUser = authState.User.Identity.Name;
+    }
+}

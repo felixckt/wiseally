@@ -77,12 +77,9 @@ else
         </TabStripTab>
         <TabStripTab Title="Devexpress Blazor Grid">
 
-            <DxDataGrid  T="@ModelClass.Model.SalesOrder" Data="@salesorders"
-
+            <DxDataGrid T="@ModelClass.Model.SalesOrder" Data="@salesorders"
                         PageSize="10"
                         ShowFilterRow="false"
-                         
-                         
                         style="width:70%">
                 <DxDataGridCommandColumn Width="150px" />
                 <DxDataGridColumn Field="@(nameof(ModelClass.Model.SalesOrder.SalesOrderID))" />
@@ -95,7 +92,7 @@ else
         </TabStripTab>
     </TelerikTabStrip>
 
-   
+
 
 };
 
@@ -113,6 +110,7 @@ else
 
     {
         salesorders = await http.GetJsonAsync<ModelClass.Model.SalesOrder[]>("https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders");
+        
     }
 
     async Task DeleteSalesOrder(int salesorderid)
@@ -129,12 +127,13 @@ else
     }
 
     MarkupString helloString;
-    
-     async Task OnRowRemoving(ModelClass.Model.SalesOrder dataItem) {
+
+    async Task OnRowRemoving(ModelClass.Model.SalesOrder dataItem)
+    {
         await http.DeleteAsync($"https://wacrmwebservice.azurewebsites.net/api/SalesOrderHeaders/{dataItem.SalesOrderID}");
-     }
+    }
     //async Task OnRowUpdating(ModelClass.Model.SalesOrder dataItem, IDictionary<string, object> newValue) {
-       // await ForecastService.Update(dataItem, newValue);
+    // await ForecastService.Update(dataItem, newValue);
     //}
     //async Task OnRowInserting(IDictionary<string, object> newValue) {
     //    await ForecastService.Insert(newValue);

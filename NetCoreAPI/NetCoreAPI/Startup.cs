@@ -29,11 +29,15 @@ namespace NetCoreAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<WaDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WAOnPremConnection")));
             services.AddControllers(options =>
             {
                 options.Filters.Add(typeof(MyExceptionFilter));
             });
+
             services.AddControllers();
+            //services.AddControllers().AddNewtonsoftJson(); ;
+            
 
             services.AddSingleton<IRepository, InMemoryRepository>();
             //services.AddScoped<IRepository, EFCoreRepository>();
@@ -59,6 +63,9 @@ namespace NetCoreAPI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                //endpoints.MapControllerRoute(
+                  //  name: "default",
+                  //  pattern: "{controller=Home}/{action=Index}");
             });
         }
     }

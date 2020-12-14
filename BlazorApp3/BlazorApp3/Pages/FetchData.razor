@@ -1,0 +1,88 @@
+﻿@page "/fetchdata"
+@using BlazorApp3.Data
+@using NetCoreAPI
+@using NetCoreAPI.Entities
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.EntityFrameworkCore.SqlServer
+@using Microsoft.Extensions.Configuration;
+@inject WeatherForecastService ForecastService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<DxDataGrid Data="@datagenres"
+            PageSize="5"
+            CssClass="mw-1100">
+    <DxDataGridCommandColumn Width="150px" />
+
+    <DxDataGridColumn Field="@nameof(Genre.Id)" Caption="GEnre ID" Width="150px" />
+    <DxDataGridColumn Field="@nameof(Genre.Name)" Caption="GEnre Name" Width="150px" />
+
+</DxDataGrid>
+
+
+
+
+@code {
+    private BlazorApp3.Data.WeatherForecast[] forecasts;
+    private NetCoreAPI.Entities.Genre[] genres;
+    //private readonly BlazorApp3.ApplicationDbContext context;
+    NetCoreAPI.Entities.Genre[] datagenres { get; set; }
+    private IConfiguration configuration;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+       // var optionsBuilder = new DbContextOptionsBuilder<BlazorApp3.ApplicationDbContext>();
+
+        //optionsBuilder.UseSqlServer("Server=tcp:wamssql.database.windows.net,1433;Initial Catalog=wadb;Persist Security Info=False;User ID=wamsadmin;Password=WiseAlly212;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+        //optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+
+        //BlazorApp3.ApplicationDbContext db = new BlazorApp3.ApplicationDbContext(optionsBuilder.Options);
+        BlazorApp3.ApplicationDbContext db = new BlazorApp3.ApplicationDbContext();
+
+        datagenres = db.Genres.ToArray();
+    }
+
+
+
+
+    //DbContextOptions option = new DbContextOptions();
+
+
+    //public IEnumerable<Genre> GetAllGenre()
+    // {
+    //   return db.Genres;
+
+    //}
+}

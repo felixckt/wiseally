@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>aspnet-TimeSheet-564A2EB1-63F3-405A-94B3-FA641567D60A</UserSecretsId>
+    <WebProject_DirectoryAccessLevelKey>0</WebProject_DirectoryAccessLevelKey>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview3.20168.3" />
+    <PackageReference Include="Microsoft.Net.Http.Headers" Version="2.2.8" />
+    <PackageReference Include="Microsoft.SharePointOnline.CSOM" Version="16.1.20720.12000" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Telerik.UI.for.Blazor" Version="2.20.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ModelClass">
+      <HintPath>..\..\ModelClass\ModelClass\bin\Release\netcoreapp3.0\ModelClass.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
